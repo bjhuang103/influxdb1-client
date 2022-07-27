@@ -347,7 +347,8 @@ func (c *Client) Write(bp BatchPoints) (*Response, error) {
 	params.Set("precision", precision)
 	params.Set("consistency", bp.WriteConsistency)
 	req.URL.RawQuery = params.Encode()
-
+	
+	fmt.Printf("report url=%v \n",req.URL.String())
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
@@ -359,6 +360,7 @@ func (c *Client) Write(bp BatchPoints) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("report response: code=%v, body=%v",resp.StatusCode,string(body))
 
 	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
 		var err = fmt.Errorf(string(body))
